@@ -30,14 +30,6 @@ def main():
     ticker = 'TSLA'
     scaler, data_scaled = get_scaled_data(ticker)
 
-    def create_dataset(dataset, time_step=1):
-        dataX, dataY = [], []
-        for i in range(len(dataset) - time_step - 1):
-            a = dataset[i:(i + time_step), 0]
-            dataX.append(a)
-            dataY.append(dataset[i + time_step, 0])
-        return np.array(dataX), np.array(dataY)
-
     """## Parameters
 
 
@@ -159,6 +151,17 @@ def get_scaled_data(ticker):
     scaler = MinMaxScaler(feature_range=(0, 1))
     data_scaled = scaler.fit_transform(data)
     return scaler,data_scaled
+
+
+def create_dataset(dataset, time_step=1):
+    dataX, dataY = [], []
+
+    for i in range(len(dataset) - time_step - 1):
+        a = dataset[i:(i + time_step), 0]
+        dataX.append(a)
+        dataY.append(dataset[i + time_step, 0])
+
+    return np.array(dataX), np.array(dataY)
 
 
 if '__main__' == __name__:
