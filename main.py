@@ -171,7 +171,7 @@ def visualize_predictions(ticker, scaler, data_scaled, time_step, train_predict,
     plt.ylabel('Stock Price')
     plt.legend()
     plt.grid(True)
-    plt.savefig('stock_price_prediction.png', dpi=300)
+    plt.savefig(f'{ticker}_result.png', dpi=300)
 
 
 if '__main__' == __name__:
