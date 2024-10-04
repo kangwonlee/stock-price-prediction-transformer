@@ -94,9 +94,9 @@ testPredictPlot[len(train_predict)+(time_step*2)+1:len(data_scaled)-1, :] = test
 
 # Plot baseline and predictions
 plt.figure(figsize=(12, 6))
-plt.plot(scaler.inverse_transform(data_scaled), label='Actual Stock Price')
-plt.plot(trainPredictPlot, label='Train Predict')
-plt.plot(testPredictPlot, label='Test Predict')
+plt.semilogy(scaler.inverse_transform(data_scaled), label='Actual Stock Price')
+plt.semilogy(trainPredictPlot, label='Train Predict')
+plt.semilogy(testPredictPlot, label='Test Predict')
 plt.title('Stock Price Prediction using Transformer')
 plt.xlabel('Time')
 plt.ylabel('Stock Price')
