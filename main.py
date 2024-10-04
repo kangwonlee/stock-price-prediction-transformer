@@ -105,7 +105,7 @@ def main():
     plt.semilogy(scaler.inverse_transform(data_scaled), label='Actual Stock Price')
     plt.semilogy(trainPredictPlot, label='Train Predict')
     plt.semilogy(testPredictPlot, label='Test Predict')
-    plt.title('Stock Price Prediction using Transformer')
+    plt.title(f'Stock Price Prediction using Transformer {ticker}')
     plt.xlabel('Time')
     plt.ylabel('Stock Price')
     plt.legend()
