@@ -28,12 +28,7 @@ import yfinance as yf
 
 def main():
     ticker = 'TSLA'
-    df = yf.download(ticker, start="2010-06-29", end="2022-03-25", period='1d')
-
-    data = df[['Close']].values
-
-    scaler = MinMaxScaler(feature_range=(0, 1))
-    data_scaled = scaler.fit_transform(data)
+    scaler, data_scaled = get_scaled_data(ticker)
 
     def create_dataset(dataset, time_step=1):
         dataX, dataY = [], []
@@ -154,6 +149,16 @@ def main():
     plt.legend()
     plt.grid(True)
     plt.savefig('stock_price_prediction.png', dpi=300)
+
+
+def get_scaled_data(ticker):
+    df = yf.download(ticker, start="2010-06-29", end="2022-03-25", period='1d')
+
+    data = df[['Close']].values
+
+    scaler = MinMaxScaler(feature_range=(0, 1))
+    data_scaled = scaler.fit_transform(data)
+    return scaler,data_scaled
 
 
 if '__main__' == __name__:
