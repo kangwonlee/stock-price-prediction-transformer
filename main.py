@@ -28,24 +28,26 @@ import yfinance as yf
 
 def main():
     ticker = 'TSLA'
+    time_step = 100
+    training_ratio = 0.67
     scaler, data_scaled = get_scaled_data(ticker)
 
-    """## Parameters
-
-
+    """
+    ## Parameters
     """
 
-    time_step = 100
-    training_size = int(len(data_scaled) * 0.67)
+    training_size = int(len(data_scaled) * training_ratio)
     test_size = len(data_scaled) - training_size
-    train_data, test_data = data_scaled[0:training_size,:], data_scaled[training_size:len(data_scaled),:]
+
+    # separate data into training and test
+    train_data = data_scaled[0:training_size,:]
+    test_data  = data_scaled[training_size:len(data_scaled),:]
 
     X_train, y_train = create_dataset(train_data, time_step)
     X_test, y_test = create_dataset(test_data, time_step)
 
-    """## Reshape input for the model
-
-
+    """
+    ## Reshape input for the model
     """
 
     X_train = X_train.reshape(X_train.shape[0], X_train.shape[1], 1)
@@ -65,9 +67,8 @@ def main():
         epochs=50, batch_size=64, verbose=1
     )
 
-    """## Make predictions
-
-
+    """
+    ## Make predictions
     """
 
     # Make predictions
