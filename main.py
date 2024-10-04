@@ -51,20 +51,7 @@ def main():
     X_train = X_train.reshape(X_train.shape[0], X_train.shape[1], 1)
     X_test = X_test.reshape(X_test.shape[0], X_test.shape[1], 1)
 
-    """## Model Definition
-
-
-    """
-
-    inputs = Input(shape=(X_train.shape[1], X_train.shape[2]))
-    x = transformer_encoder(inputs, head_size=256, num_heads=4, ff_dim=4, dropout=0.1)
-    x = GlobalAveragePooling1D(data_format='channels_first')(x)
-    x = Dropout(0.1)(x)
-    x = Dense(20, activation="relu")(x)
-    outputs = Dense(1, activation="linear")(x)
-
-    model = Model(inputs=inputs, outputs=outputs)
-    model.compile(optimizer="adam", loss="mean_squared_error")
+    model = define_model(X_train)
 
     """## Model Summary"""
 
@@ -163,6 +150,24 @@ def transformer_encoder(inputs, head_size, num_heads, ff_dim, dropout=0):
     x = Dense(inputs.shape[-1])(x)
 
     return x + res
+
+
+def define_model(X_train):
+    """
+    ## Model Definition
+    """
+
+    inputs = Input(shape=(X_train.shape[1], X_train.shape[2]))
+    x = transformer_encoder(inputs, head_size=256, num_heads=4, ff_dim=4, dropout=0.1)
+    x = GlobalAveragePooling1D(data_format='channels_first')(x)
+    x = Dropout(0.1)(x)
+    x = Dense(20, activation="relu")(x)
+    outputs = Dense(1, activation="linear")(x)
+
+    model = Model(inputs=inputs, outputs=outputs)
+    model.compile(optimizer="adam", loss="mean_squared_error")
+
+    return model
 
 
 if '__main__' == __name__:
