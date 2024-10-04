@@ -51,23 +51,6 @@ def main():
     X_train = X_train.reshape(X_train.shape[0], X_train.shape[1], 1)
     X_test = X_test.reshape(X_test.shape[0], X_test.shape[1], 1)
 
-    """## Transformer Block
-
-
-    """
-
-    def transformer_encoder(inputs, head_size, num_heads, ff_dim, dropout=0):
-        x = LayerNormalization(epsilon=1e-6)(inputs)
-        x = MultiHeadAttention(key_dim=head_size, num_heads=num_heads, dropout=dropout)(x, x)
-        x = Dropout(dropout)(x)
-        res = x + inputs
-
-        x = LayerNormalization(epsilon=1e-6)(res)
-        x = Dense(ff_dim, activation="relu")(x)
-        x = Dropout(dropout)(x)
-        x = Dense(inputs.shape[-1])(x)
-        return x + res
-
     """## Model Definition
 
 
@@ -162,6 +145,24 @@ def create_dataset(dataset, time_step=1):
         dataY.append(dataset[i + time_step, 0])
 
     return np.array(dataX), np.array(dataY)
+
+
+def transformer_encoder(inputs, head_size, num_heads, ff_dim, dropout=0):
+    """
+    ## Transformer Block
+    """
+
+    x = LayerNormalization(epsilon=1e-6)(inputs)
+    x = MultiHeadAttention(key_dim=head_size, num_heads=num_heads, dropout=dropout)(x, x)
+    x = Dropout(dropout)(x)
+    res = x + inputs
+
+    x = LayerNormalization(epsilon=1e-6)(res)
+    x = Dense(ff_dim, activation="relu")(x)
+    x = Dropout(dropout)(x)
+    x = Dense(inputs.shape[-1])(x)
+
+    return x + res
 
 
 if '__main__' == __name__:
