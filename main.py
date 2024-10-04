@@ -30,6 +30,10 @@ def main():
     ticker = 'TSLA'
     time_step = 100
     training_ratio = 0.67
+    predict_price(ticker, time_step, training_ratio)
+
+
+def predict_price(ticker, time_step, training_ratio):
     scaler, data_scaled = get_scaled_data(ticker)
 
     """
