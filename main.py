@@ -85,32 +85,7 @@ def main():
     print(f"Train RMSE: {train_rmse}")
     print(f"Test RMSE: {test_rmse}")
 
-    """## Plotting the results
-
-
-    """
-
-    # Adjust the time_step offset for plotting
-    trainPredictPlot = np.empty_like(data_scaled)
-    trainPredictPlot[:, :] = np.nan
-    trainPredictPlot[time_step:len(train_predict)+time_step, :] = train_predict
-
-    # Shift test predictions for plotting
-    testPredictPlot = np.empty_like(data_scaled)
-    testPredictPlot[:, :] = np.nan
-    testPredictPlot[len(train_predict)+(time_step*2)+1:len(data_scaled)-1, :] = test_predict
-
-    # Plot baseline and predictions
-    plt.figure(figsize=(12, 6))
-    plt.semilogy(scaler.inverse_transform(data_scaled), label='Actual Stock Price')
-    plt.semilogy(trainPredictPlot, label='Train Predict')
-    plt.semilogy(testPredictPlot, label='Test Predict')
-    plt.title(f'Stock Price Prediction using Transformer {ticker}')
-    plt.xlabel('Time')
-    plt.ylabel('Stock Price')
-    plt.legend()
-    plt.grid(True)
-    plt.savefig('stock_price_prediction.png', dpi=300)
+    visualize_predictions(ticker, scaler, data_scaled, time_step, train_predict, test_predict)
 
 
 def get_scaled_data(ticker):
@@ -168,6 +143,34 @@ def define_model(X_train):
     model.compile(optimizer="adam", loss="mean_squared_error")
 
     return model
+
+
+def visualize_predictions(ticker, scaler, data_scaled, time_step, train_predict, test_predict):
+    """
+    ## Plotting the results
+    """
+
+    # Adjust the time_step offset for plotting
+    trainPredictPlot = np.empty_like(data_scaled)
+    trainPredictPlot[:, :] = np.nan
+    trainPredictPlot[time_step:len(train_predict)+time_step, :] = train_predict
+
+    # Shift test predictions for plotting
+    testPredictPlot = np.empty_like(data_scaled)
+    testPredictPlot[:, :] = np.nan
+    testPredictPlot[len(train_predict)+(time_step*2)+1:len(data_scaled)-1, :] = test_predict
+
+    # Plot baseline and predictions
+    plt.figure(figsize=(12, 6))
+    plt.semilogy(scaler.inverse_transform(data_scaled), label='Actual Stock Price')
+    plt.semilogy(trainPredictPlot, label='Train Predict')
+    plt.semilogy(testPredictPlot, label='Test Predict')
+    plt.title(f'Stock Price Prediction using Transformer {ticker}')
+    plt.xlabel('Time')
+    plt.ylabel('Stock Price')
+    plt.legend()
+    plt.grid(True)
+    plt.savefig('stock_price_prediction.png', dpi=300)
 
 
 if '__main__' == __name__:
